@@ -17,3 +17,7 @@ six~=1.5.2
 stripe~=1.70.0
 urllib3~=1.23
 wheel~=0.24.0
+
+
+echo 'alias run="python3 $GITPOD_REPO_ROOT/manage.py runserver 0.0.0.0:8000"' >> ~/.bashrc
+source ~/.bashrc
