@@ -61,7 +61,7 @@ def register(request):
     return render(request, 'registration.html', {"registration_form": registration_form})
 
 
-def user_profile(request):
-    """ The user's profile page """
+def user_portfolio(request):
+    """ The user's portfolio page """
     user = User.objects.get(email=request.user.email)
-    return render(request, 'profile.html', {"profile": user})
+    return render(request, 'portfolio.html', {"portfolio_user": user})
