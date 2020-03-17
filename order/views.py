@@ -25,7 +25,7 @@ def add_to_order(order_type, request, id):
         order[id] = order.get(id, quantity)
 
     request.session[order_type] = order
-    return redirect(reverse('index'))
+    return redirect(reverse('view_order'))
 
 
 def adjust_commodity_order(request, id):

@@ -1,8 +1,12 @@
 from django.conf.urls import url
-from .views import view_cart, add_to_cart, adjust_cart
+from .views import view_order, add_to_share_order
+from .views import adjust_share_order, add_to_commodity_order
+from .views import adjust_commodity_order
 
 urlpatterns = [
-    url(r'^$', view_cart, name='view_order'),
-    url(r'^add/(?P<id>\d+)', add_to_cart, name='add_to_order'),
-    url(r'^adjust/(?P<id>\d+)', adjust_cart, name='adjust_order'),
+    url(r'^$', view_order, name='view_order'),
+    url(r'^addshare/(?P<id>\d+)', add_to_share_order, name='add_to_share_order'),
+    url(r'^adjustshare/(?P<id>\d+)', adjust_share_order, name='adjust_share_order'),
+    url(r'^addcommodity/(?P<id>\d+)', add_to_commodity_order, name='add_to_commodity_order'),
+    url(r'^adjustcommodity/(?P<id>\d+)', adjust_commodity_order, name='adjust_commodity_order'),
 ]
