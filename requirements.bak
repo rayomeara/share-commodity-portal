@@ -22,5 +22,6 @@ wheel~=0.24.0
 echo 'alias run="python3 $GITPOD_REPO_ROOT/manage.py runserver 0.0.0.0:8000"' >> ~/.bashrc
 source ~/.bashrc
 
+<div class="product" style="background-image: url('{{ MEDIA_URL }}{{ commodity.image}}')"></div>
 <a href="{% url 'checkout' %}" class="btn btn-success" role="button"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>Checkout</a>
 

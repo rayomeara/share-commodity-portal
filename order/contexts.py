@@ -6,8 +6,6 @@ def order_contents(request):
     """ Ensures that the order contents are available when rendering every page """
     share_order = process_order(request, 'share_order')
     commodity_order = process_order(request, 'commodity_order')
-    print(share_order)
-    print(commodity_order)
     total = share_order[1] + commodity_order[1]
     product_count = share_order[2] + commodity_order[2]
 

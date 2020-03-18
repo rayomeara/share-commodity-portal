@@ -19,6 +19,8 @@ from accounts.views import index
 from accounts import urls as accounts_urls
 from listing import urls as listing_urls
 from order import urls as order_urls
+from django.views.static import serve
+from .settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,4 +28,5 @@ urlpatterns = [
     url(r'^accounts/', include(accounts_urls)),
     url(r'^listing/', include(listing_urls)),
     url(r'^order/', include(order_urls)),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 ]
