@@ -1,7 +1,11 @@
+chardet==3.0.4
 Django==1.11.17
 django-forms-bootstrap==3.1.0
-pytz==2019.3
-Django==1.11.17
-django-forms-bootstrap==3.1.0
+gunicorn==19.7.1
+idna==2.9
 Pillow==5.4.1
+psycopg2==2.7.3.1
 pytz==2019.3
+requests==2.23.0
+stripe==1.70.0
+urllib3==1.25.8
