@@ -34,8 +34,8 @@ def process_payment(request):
                 )
                 payment_share_item.save()
 
-            cart = request.session.get('commodity_order', {})
-            for id, quantity in cart.items():
+            commodity_order = request.session.get('commodity_order', {})
+            for id, quantity in commodity_order.items():
                 commodity = get_object_or_404(Commodity, pk=id)
                 total += quantity * commodity.price
                 payment_commodity_item = PaymentCommodityItem(
@@ -71,4 +71,4 @@ def process_payment(request):
         financials_form = PaymentFinancialsForm()
         payment_form = PaymentForm()
 
-    return render(request, "checkout.html", {'payment_form': payment_form, 'financials_form': financials_form, 'publishable': settings.STRIPE_PUBLISHABLE})
+    return render(request, "payment.html", {'payment_form': payment_form, 'payment_financials_form': financials_form, 'publishable': settings.STRIPE_PUBLISHABLE})
