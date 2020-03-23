@@ -3,6 +3,7 @@ from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
+from payment.models import SharePurchase, CommodityPurchase
 
 # Create your views here.
 
@@ -64,4 +65,10 @@ def register(request):
 def user_portfolio(request):
     """ The user's portfolio page """
     user = User.objects.get(email=request.user.email)
-    return render(request, 'portfolio.html', {"portfolio_user": user})
+    share_purchases = SharePurchase.objects.filter(
+        user=user
+    )
+    commodity_purchases = CommodityPurchase.objects.filter(
+        user=user
+    )
+    return render(request, 'portfolio.html', {"portfolio_user": user, "share_purchases": share_purchases, "commodity_purchases": commodity_purchases})

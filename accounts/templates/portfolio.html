@@ -1,9 +1,22 @@
 {% extends 'base.html' %}
 
-{% block page_title %}{{ user }}'s Portfolio{% endblock %}
+{% block page_title %}{{ portfolio_user }}'s Portfolio{% endblock %}
 
-{% block page_heading %}{{ user }}'s Portfolio{% endblock %}
+{% block page_heading %}{{ portfolio_user }}'s Portfolio{% endblock %}
 
 {% block content %}
-<p>{{ portfolio_user.email }}</p>
+<p><{{ portfolio_user.email }}></p>
+<p>{{ portfolio_user }}</p>
+<div class="row row-flex">
+<p><h2>Currently owned products for: </h2><h3>{{portfolio_user}}</h3></p>
+{% for share_purchase in share_purchases %}
+<p>{{ share_purchase.share.name }}</p>
+<p>{{ share_purchase.quantity }}</p>
+<p>{{ share_purchase.share.price }}</p>
+{% endfor %}
+{% for commodity_purchase in commodity_purchases %}
+<p>{{ commodity_purchase.commodity.name }}</p>
+<p>{{ commodity_purchase.quantity }}</p>
+<p>{{ commodity_purchase.commodity.price }}</p>
+{% endfor %}
 {% endblock%}

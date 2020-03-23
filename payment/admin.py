@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Payment, PaymentCommodityItem, PaymentShareItem
+from .models import Payment, PaymentCommodityItem, PaymentShareItem, SharePriceHistory, SharePurchase, CommodityPriceHistory, CommodityPurchase
 
 # Register your models here.
 class PaymentCommidityLineAdminInline(admin.TabularInline):
@@ -12,3 +12,7 @@ class PaymentAdmin(admin.ModelAdmin):
     inlines = (PaymentCommidityLineAdminInline, PaymentShareLineAdminInline,)
 
 admin.site.register(Payment, PaymentAdmin)
+admin.site.register(SharePriceHistory)
+admin.site.register(CommodityPriceHistory)
+admin.site.register(SharePurchase)
+admin.site.register(CommodityPurchase)
