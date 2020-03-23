@@ -16,7 +16,6 @@ def process_payment(request):
     if request.method == "POST":
         payment_form = PaymentForm(request.POST)
         financials_form = PaymentFinancialsForm(request.POST)
-
         if payment_form.is_valid() and financials_form.is_valid():
             payment = payment_form.save(commit=False)
             payment.date = timezone.now()
@@ -59,7 +58,7 @@ def process_payment(request):
                 messages.error(request, "You have successfully paid")
                 request.session['share_order'] = {}
                 request.session['commodity_order'] = {}
-                return redirect(reverse('listing'))
+                return redirect(reverse('current_listing'))
             else:
                 messages.error(request, "Unable to take payment")
 
