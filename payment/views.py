@@ -6,6 +6,7 @@ from .models import PaymentShareItem, PaymentCommodityItem, SharePurchase, Share
 from django.conf import settings
 from django.utils import timezone
 from listing.models import Share, Commodity
+from django.db.models.query import EmptyQuerySet
 from django.contrib.auth.models import User
 import stripe
 
@@ -38,11 +39,19 @@ def process_payment(request):
                 share.previous_price = share.price
                 share.price = new_share_price
                 share.save()
-                share_purchase = SharePurchase.filter(
+                share_purchase_set = SharePurchase.objects.filter(
                     user=user,
                     share=share
                 )
-                share_purchase.quantity = share_purchase.quantity + quantity
+                if len(share_purchase_set) == 0:
+                    share_purchase = SharePurchase(
+                        user=user,
+                        share=share,
+                        quantity=quantity
+                    )
+                else:
+                    share_purchase = share_purchase_set[0]
+                    share_purchase.quantity = share_purchase.quantity + quantity
                 share_purchase.save()
                 share_price_history = SharePriceHistory(
                     share=share,
@@ -65,11 +74,19 @@ def process_payment(request):
                 commodity.previous_price = commodity.price
                 commodity.price = new_commodity_price
                 commodity.save()
-                commodity_purchase = CommodityPurchase.objects.get(
+                commodity_purchase_set = CommodityPurchase.objects.filter(
                     user=user,
                     commodity=commodity
                 )
-                commodity_purchase.quantity = commodity_purchase.quantity + quantity
+                if len(commodity_purchase_set) == 0:
+                    commodity_purchase = CommodityPurchase(
+                        user=user,
+                        commodity=commodity,
+                        quantity=quantity
+                    )
+                else:
+                    commodity_purchase = commodity_purchase_set[0]
+                    commodity_purchase.quantity = commodity_purchase.quantity + quantity
                 commodity_purchase.save()
                 commodity_price_history = CommodityPriceHistory(
                     commodity=commodity,
