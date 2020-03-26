@@ -20,6 +20,7 @@ from accounts import urls as accounts_urls
 from listing import urls as listing_urls
 from order import urls as order_urls
 from payment import urls as payment_urls
+from performance import urls as performance_urls
 from django.views.static import serve
 from .settings import MEDIA_ROOT
 
@@ -30,5 +31,6 @@ urlpatterns = [
     url(r'^listing/', include(listing_urls)),
     url(r'^order/', include(order_urls)),
     url(r'^payment/', include(payment_urls)),
+    url(r'^performance/', include(performance_urls)),
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT})
 ]
