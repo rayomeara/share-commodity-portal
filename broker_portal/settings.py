@@ -26,7 +26,7 @@ SECRET_KEY = 'fs1q+kbf0unyzwp9e$_o5&zqsqe8u4ys61(*9bovi7jbt!z@wt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-bc3a6115-c709-4a57-897c-312504998571.ws-eu01.gitpod.io', 'rom-broker-portal.herokuapp.com']
+ALLOWED_HOSTS = ['8000-e0f8c602-949d-49e0-91e2-43a0a6f38ebb.ws-eu01.gitpod.io', 'rom-broker-portal.herokuapp.com']
 
 
 # Application definition
