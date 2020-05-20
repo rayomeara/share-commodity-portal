@@ -56,7 +56,8 @@ def process_payment(request):
                 share_price_history = SharePriceHistory(
                     share=share,
                     old_price=share.previous_price,
-                    new_price=share.price
+                    new_price=share.price,
+                    transaction_date=timezone.now()
                 )
                 share_price_history.save()
 
@@ -91,7 +92,8 @@ def process_payment(request):
                 commodity_price_history = CommodityPriceHistory(
                     commodity=commodity,
                     old_price=commodity.previous_price,
-                    new_price=commodity.price
+                    new_price=commodity.price,
+                    transaction_date=timezone.now()
                 )
                 commodity_price_history.save()
 

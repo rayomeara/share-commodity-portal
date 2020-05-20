@@ -53,14 +53,16 @@ class SharePriceHistory(models.Model):
     share = models.ForeignKey(Share, null=False)
     old_price = models.DecimalField(max_digits=6, decimal_places=2)
     new_price = models.DecimalField(max_digits=6, decimal_places=2)
+    transaction_date = models.DateField()
 
     def __str__(self):
-        return "{0} : {1} {2}".format(self.share.name, self.old_price, self.new_price)
+        return "{0} : {1} {2}: {3}".format(self.share.name, self.old_price, self.new_price, self.transaction_date)
 
 class CommodityPriceHistory(models.Model):
     commodity = models.ForeignKey(Commodity, null=False)
     old_price = models.DecimalField(max_digits=6, decimal_places=2)
     new_price = models.DecimalField(max_digits=6, decimal_places=2)
+    transaction_date = models.DateField()
 
     def __str__(self):
-        return "{0} : {1} {2}".format(self.commodity.name, self.old_price, self.new_price)
+        return "{0} : {1} {2} : {3}".format(self.commodity.name, self.old_price, self.new_price, self.transaction_date)
