@@ -127,6 +127,6 @@ def process_payment(request):
 
 def process_new_price(price, quantity, is_purchase):
     if is_purchase:
-        return price + (price / 1000 * quantity)
+        return '{:.2f}'.format(price + (price / 100 * quantity))
     else:
-        return price - (price / 1000 * quantity)
+        return '{:.2f}'.format(price - (price / 100 * quantity))
