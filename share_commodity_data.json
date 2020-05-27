@@ -5,7 +5,7 @@
     {"model": "listing.share", "pk": 4, "fields": {"name": "Microsoft", "price": "185.49", "previous_price": "191.23", "image": "images/microsoft.jpg"}}, 
     {"model": "listing.share", "pk": 5, "fields": {"name": "Nike", "price": "92.90", "previous_price": "95.59", "image": "images/nike.jpg"}}, 
     {"model": "listing.commodity", "pk": 1, "fields": {"name": "Gold", "price": "1744.10", "unit": "Ounce", "previous_price": "1700.00", "image": "images/gold.jpg"}},
-    {"model": "listing.commodity", "pk": 2, "fields": {"name": "Copper", "price": "241.60", "unit": "Tonne", "previous_price": "242.50", "image": "images/copper_2pvTS71.jpg"}}, 
+    {"model": "listing.commodity", "pk": 2, "fields": {"name": "Copper", "price": "241.60", "unit": "Tonne", "previous_price": "242.50", "image": "images/copper.jpg"}}, 
     {"model": "listing.commodity", "pk": 3, "fields": {"name": "Platinum", "price": "841.57", "unit": "Ounce", "previous_price": "835.55", "image": "images/platinum.jpg"}}, 
     {"model": "listing.commodity", "pk": 4, "fields": {"name": "Silver", "price": "17.88", "unit": "Ounce", "previous_price": "17.60", "image": "images/silver.jpg"}}, 
     {"model": "listing.commodity", "pk": 5, "fields": {"name": "Zinc", "price": "2024.00", "unit": "Tonne", "previous_price": "2009.00", "image": "images/zinc.jpg"}}
