@@ -4,7 +4,8 @@
 
 {% block content %}
 <div class="row row-flex">
-    <form class="form-horizontal">
+    <form class="form-horizontal" method="POST">
+        {% csrf_token %}
         <fieldset>
             <legend>Legend</legend>
             <div class="form-group">
@@ -32,15 +33,38 @@
     
     <canvas id="myChart" width="500" height="400"></canvas>
 
-    <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
-    <script type="text/javascript">
-        $.get('{% url "line_chart_json" %}', function(data) {
-            var ctx = $("#myChart").get(0).getContext("2d");
-            new Chart(ctx, {
-                type: 'line', data: data
+    {% block javascript %} 
+        <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
+        <script type="text/javascript">
+            var shareChart;
+            $.get('{% url "line_chart_json" %}', function(data) {
+                var ctx = $("#myChart").get(0).getContext("2d");
+                shareChart = new Chart(ctx, {
+                    type: 'line', data: data
+                });
+            });
+
+            $('#share-select').on('change', function () {
+            var name = $('#share-select').val();
+            var data = {'name': name};
+            var url = "chartJSON/";
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: data,
+                beforeSend: function(xhr) {
+                    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
+                },
+                success: function (response) {
+                    console.log('chart context:' + JSON.stringify(response));
+                    shareChart.config.data = response;
+                    shareChart.update();
+                }
             });
         });
-    </script>
+        </script>
+    {% endblock %}     
 </div>
 
 {% endblock %}
+
