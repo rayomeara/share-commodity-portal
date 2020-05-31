@@ -13,7 +13,7 @@
             <div class="col-lg-10">
                 <select class="form-control" id="share-select">
                     {% for share in shares %}
-                    <option>{{ share.name }}</option>
+                    <option value="{{share.id}}">{{ share.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -23,7 +23,7 @@
             <div class="col-lg-10">
                 <select class="form-control" id="commodity-select">
                     {% for commodity in commodities %}
-                    <option>{{ commodity.name }}</option>
+                    <option value="{{commodity.id}}">{{ commodity.name }}</option>
                     {% endfor %}
                 </select>
             </div>
@@ -45,8 +45,9 @@
             });
 
             $('#share-select').on('change', function () {
-            var name = $('#share-select').val();
-            var data = {'name': name};
+            var selected_name = $('#share-select option:selected').text();   
+            var selected_id = $('#share-select option:selected').val();
+            var data = {'selected_id': selected_id, 'selected_name': selected_name};
             var url = "chartJSON/";
             $.ajax({
                 type: 'POST',

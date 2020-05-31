@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect, reverse
 from listing.models import Share, Commodity
+from payment.models import SharePriceHistory, CommodityPriceHistory
 from chartjs.views.lines import BaseLineChartView
+from datetime import datetime
 
 
 def show_performance(request):
@@ -26,9 +28,25 @@ class LineChartJSONView(BaseLineChartView):
 
     def post(self, request):
         post_request = request.POST
-        self.name = post_request['name']
-
-        self.providers = ["A", "B", "C"]
+        self.selected_id = post_request['selected_id']
+        self.selected_name = post_request['selected_name']
+        print(self.selected_id)
+        print(self.selected_name)
+        sharehistoriesreverse = SharePriceHistory.objects.filter(share=self.selected_id).order_by('-transaction_date', 'id')[:5]
+        sharehistories = sharehistoriesreverse.reverse()
+        self.data = []
+        sharedata = []
+        for sharehistory in sharehistories:
+            print(datetime.now())
+            print(sharehistory.new_price)
+            sharedata = []
+            sharedata.append(sharehistory.new_price)
+            
+        self.data.append(sharedata)
+        print(self.data)
+        self.providers = []
+        self.providers.append([self.selected_name])
+        self.labels = []
         context = self.get_context_data()
         print('post context data: ', context)
 
