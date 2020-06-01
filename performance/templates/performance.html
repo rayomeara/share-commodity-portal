@@ -40,7 +40,7 @@
             $.get('{% url "line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
                 shareChart = new Chart(ctx, {
-                    type: 'line', data: data
+                    type: 'line', data: data, backgroundColor: 'rgba(255, 255, 255, 0.1)'
                 });
             });
 

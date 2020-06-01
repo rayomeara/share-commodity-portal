@@ -30,25 +30,19 @@ class LineChartJSONView(BaseLineChartView):
         post_request = request.POST
         self.selected_id = post_request['selected_id']
         self.selected_name = post_request['selected_name']
-        print(self.selected_id)
-        print(self.selected_name)
-        sharehistoriesreverse = SharePriceHistory.objects.filter(share=self.selected_id).order_by('-transaction_date', 'id')[:5]
-        sharehistories = sharehistoriesreverse.reverse()
+        sharehistories = SharePriceHistory.objects.filter(share=self.selected_id).order_by('-transaction_date', 'id')[:5][::-1]
         self.data = []
         sharedata = []
+        self.labels = []
         for sharehistory in sharehistories:
-            print(datetime.now())
-            print(sharehistory.new_price)
-            sharedata = []
             sharedata.append(sharehistory.new_price)
-            
+            self.labels.append(sharehistory.transaction_date)
+
         self.data.append(sharedata)
-        print(self.data)
         self.providers = []
         self.providers.append([self.selected_name])
-        self.labels = []
+
         context = self.get_context_data()
-        print('post context data: ', context)
 
         return self.render_to_response(context)
 
