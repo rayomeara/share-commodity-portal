@@ -2,7 +2,6 @@ from django.shortcuts import render, redirect, reverse
 from listing.models import Share, Commodity
 from payment.models import SharePriceHistory, CommodityPriceHistory
 from chartjs.views.lines import BaseLineChartView
-from datetime import datetime
 
 
 def show_performance(request):
@@ -26,19 +25,27 @@ class LineChartJSONView(BaseLineChartView):
         """Return names of datasets."""
         return self.providers
 
+    def get_backgroundColor(self):
+        return "rgba(0, 255, 0, 0.5)"
+
+    
     def post(self, request):
         post_request = request.POST
         self.selected_id = post_request['selected_id']
         self.selected_name = post_request['selected_name']
-        sharehistories = SharePriceHistory.objects.filter(share=self.selected_id).order_by('-transaction_date', 'id')[:5][::-1]
+        item_lookup = post_request['item']
+        if (item_lookup == 'S'):
+            itemhistories = SharePriceHistory.objects.filter(share=self.selected_id).order_by('-transaction_date', 'id')[:5][::-1]
+        else:
+            itemhistories = CommodityPriceHistory.objects.filter(commodity=self.selected_id).order_by('-transaction_date', 'id')[:5][::-1]
         self.data = []
-        sharedata = []
+        itemdata = []
         self.labels = []
-        for sharehistory in sharehistories:
-            sharedata.append(sharehistory.new_price)
-            self.labels.append(sharehistory.transaction_date)
+        for itemhistory in itemhistories:
+            itemdata.append(itemhistory.new_price)
+            self.labels.append(itemhistory.transaction_date)
 
-        self.data.append(sharedata)
+        self.data.append(itemdata)
         self.providers = []
         self.providers.append([self.selected_name])
 

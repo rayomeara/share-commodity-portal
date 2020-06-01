@@ -12,6 +12,7 @@
             <label for="select" class="col-lg-2 control-label">Shares</label>
             <div class="col-lg-10">
                 <select class="form-control" id="share-select">
+                    <option value="" disabled selected>Select your option</option>
                     {% for share in shares %}
                     <option value="{{share.id}}">{{ share.name }}</option>
                     {% endfor %}
@@ -22,6 +23,7 @@
             <label for="select" class="col-lg-2 control-label">Commodities</label>
             <div class="col-lg-10">
                 <select class="form-control" id="commodity-select">
+                    <option value="" disabled selected>Select your option</option>
                     {% for commodity in commodities %}
                     <option value="{{commodity.id}}">{{ commodity.name }}</option>
                     {% endfor %}
@@ -40,29 +42,52 @@
             $.get('{% url "line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
                 shareChart = new Chart(ctx, {
-                    type: 'line', data: data, backgroundColor: 'rgba(255, 255, 255, 0.1)'
+                    type: 'line', data: data
                 });
             });
 
             $('#share-select').on('change', function () {
             var selected_name = $('#share-select option:selected').text();   
             var selected_id = $('#share-select option:selected').val();
-            var data = {'selected_id': selected_id, 'selected_name': selected_name};
+            $('#commodity-select').prop('selectedIndex',0);
+            var data = {'item': 'S', 'selected_id': selected_id, 'selected_name': selected_name};
             var url = "chartJSON/";
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: data,
-                beforeSend: function(xhr) {
-                    xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
-                },
-                success: function (response) {
-                    console.log('chart context:' + JSON.stringify(response));
-                    shareChart.config.data = response;
-                    shareChart.update();
-                }
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
+                    },
+                    success: function (response) {
+                        console.log('chart context:' + JSON.stringify(response));
+                        shareChart.config.data = response;
+                        shareChart.update();
+                    }
+                });
             });
-        });
+
+            $('#commodity-select').on('change', function () {
+            var selected_name = $('#commodity-select option:selected').text();   
+            var selected_id = $('#commodity-select option:selected').val();
+            $('#share-select').prop('selectedIndex',0);
+            var data = {'item': 'C', 'selected_id': selected_id, 'selected_name': selected_name};
+            var url = "chartJSON/";
+                $.ajax({
+                    type: 'POST',
+                    url: url,
+                    data: data,
+                    beforeSend: function(xhr) {
+                        xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
+                    },
+                    success: function (response) {
+                        console.log('chart context:' + JSON.stringify(response));
+                        shareChart.config.data = response;
+                        shareChart.update();
+                    }
+                });
+            });
+
         </script>
     {% endblock %}     
 </div>
