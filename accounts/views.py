@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect, reverse, get_object_or_404
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
-from payment.models import SharePurchase, CommodityPurchase
+from payment.models import SharePurchase, CommodityPurchase, UserCreditAmount
 
 # Create your views here.
 
@@ -32,6 +32,21 @@ def login(request):
                                     password=request.POST['password'])
             if user:
                 auth.login(user=user, request=request)
+                user_credit_set = UserCreditAmount.objects.filter(
+                    user=user
+                )
+                print(user_credit_set)
+                print(user)
+                if len(user_credit_set) == 0:
+                    user_credit = UserCreditAmount(
+                        user=user,
+                        credit_amount=0.00
+                    )
+                    user_credit.save()
+                else:
+                    user_credit = user_credit_set[0]
+
+                # request.session['user_credit'] = user_credit
                 return redirect(reverse('index'))
             else:
                 login_form.add_error(None, "Your username or password was incorrect")            
