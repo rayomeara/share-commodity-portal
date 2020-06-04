@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect, reverse, get_object_or_404
+from django.shortcuts import render, redirect, reverse
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserLoginForm, UserRegistrationForm
 from django.contrib.auth.models import User
-from payment.models import SharePurchase, CommodityPurchase, UserCreditAmount
+from payment.models import SharePurchase, CommodityPurchase, Wallet
 
 # Create your views here.
 
@@ -32,21 +32,19 @@ def login(request):
                                     password=request.POST['password'])
             if user:
                 auth.login(user=user, request=request)
-                user_credit_set = UserCreditAmount.objects.filter(
+                wallet_set = Wallet.objects.filter(
                     user=user
                 )
-                print(user_credit_set)
-                print(user)
-                if len(user_credit_set) == 0:
-                    user_credit = UserCreditAmount(
+                if len(wallet_set) == 0:
+                    wallet = Wallet(
                         user=user,
                         credit_amount=0.00
                     )
-                    user_credit.save()
+                    wallet.save()
                 else:
-                    user_credit = user_credit_set[0]
+                    wallet = wallet_set[0]
 
-                # request.session['user_credit'] = user_credit
+                request.session['credit_amount'] = str(wallet.credit_amount)
                 return redirect(reverse('index'))
             else:
                 login_form.add_error(None, "Your username or password was incorrect")            
@@ -87,3 +85,47 @@ def user_portfolio(request):
         user=user
     )
     return render(request, 'portfolio.html', {"portfolio_user": user, "share_purchases": share_purchases, "commodity_purchases": commodity_purchases})
+
+
+def sell_shares(request, id):
+    quantity = int(request.POST.get('quantity'))
+    share_purchase = SharePurchase.objects.get(id=id)
+    user = User.objects.get(email=request.user.email)
+    wallet_set = Wallet.objects.filter(
+        user=user
+    )
+
+    wallet = wallet_set[0]
+    sale_amount = quantity * share_purchase.share.price
+    wallet.credit_amount += sale_amount
+    request.session['credit_amount'] = str(wallet.credit_amount)
+    if share_purchase.quantity == quantity:
+        share_purchase.delete()
+    else:
+        share_purchase.quantity -= quantity
+        share_purchase.save()
+
+    messages.error(request, "You have successfully sold " + share_purchase.share.name + " options for " + share_purchase.share.price + " each!")
+
+
+def sell_commodities(request, id):
+    quantity = int(request.POST.get('quantity'))
+    commodity_purchase = CommodityPurchase.objects.get(id=id)
+    user = User.objects.get(email=request.user.email)
+    wallet_set = Wallet.objects.filter(
+        user=user
+    )
+
+    wallet = wallet_set[0]
+    sale_amount = quantity * commodity_purchase.commodity.price
+    wallet.credit_amount += sale_amount
+    request.session['credit_amount'] = str(wallet.credit_amount)
+    if commodity_purchase.quantity == quantity:
+        commodity_purchase.delete()
+    else:
+        commodity_purchase.quantity -= quantity
+        commodity_purchase.save()
+
+    messages.error(request, "You have successfully sold " + commodity_purchase.commodity.name + " options for " + commodity_purchase.price + " each!")
+    return redirect(reverse('current_listing'))
+

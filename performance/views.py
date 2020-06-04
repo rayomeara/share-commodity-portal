@@ -13,9 +13,9 @@ def show_performance(request):
 
 class LineChartJSONView(BaseLineChartView):
 
-    providers = ["Central", "Eastside", "Westside"]
-    labels = ["January", "February", "March", "April", "May", "June", "July"]
-    data = [[75, 44, 92, 11, 44, 95, 35], [41, 92, 18, 3, 73, 87, 92], [87, 21, 94, 3, 90, 13, 65]]
+    providers = []
+    labels = []
+    data = []
 
     def get_labels(self):
         """Return 7 labels for the x-axis."""

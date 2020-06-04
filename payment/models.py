@@ -67,7 +67,7 @@ class CommodityPriceHistory(models.Model):
     def __str__(self):
         return "{0} : {1} {2} : {3}".format(self.commodity.name, self.old_price, self.new_price, self.transaction_date)
 
-class UserCreditAmount(models.Model):
+class Wallet(models.Model):
     user = models.ForeignKey(User, null=False)
     credit_amount = models.DecimalField(max_digits=6, decimal_places=2)
 

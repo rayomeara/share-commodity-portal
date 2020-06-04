@@ -15,6 +15,8 @@
             <th>Product Name</th>
             <th>Quantity</th>
             <th>Current price</th>
+            <th>Quantity (Sell)</th>
+            <th></th>
             </tr>
         </thead>
         <tbody>
@@ -23,6 +25,11 @@
                 <td>{{ share_purchase.share.name }}</td>
                 <td>{{ share_purchase.quantity }}</td>
                 <td>{{ share_purchase.share.price }}</td>
+                <form class="form-inline" method="post" action="{% url 'sell_shares' share_purchase.id %}">
+                    {% csrf_token %}
+                    <td><input name="quantity" type="number" min="1" max="{{ share_purchase.quantity }}" class="form-control" placeholder="Quantity"></td>
+                    <td><button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Sell</button></td>
+                </form>
             </tr>
             {% endfor %}
             {% for commodity_purchase in commodity_purchases %}
@@ -30,6 +37,11 @@
                 <td>{{ commodity_purchase.commodity.name }}</td>
                 <td>{{ commodity_purchase.quantity }}</td>
                 <td>{{ commodity_purchase.commodity.price }}</td>
+                <form class="form-inline" method="post" action="{% url 'sell_commodities' commodity_purchase.id %}">
+                    {% csrf_token %}
+                    <td><input name="quantity" type="number" min="1" max="{{ commodity_purchase.quantity }}" class="form-control" placeholder="Quantity"></td>
+                    <td><button type="submit" class="btn btn-success"><span class="glyphicon glyphicon-edit" aria-hidden="true"></span>Sell</button></td>
+                </form>
             </tr>
             {% endfor %}
         </tbody>
