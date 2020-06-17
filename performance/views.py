@@ -25,15 +25,13 @@ class LineChartJSONView(BaseLineChartView):
         """Return names of datasets."""
         return self.providers
 
-    def get_backgroundColor(self):
-        return "rgba(0, 255, 0, 0.5)"
-
-    
     def post(self, request):
         post_request = request.POST
         self.selected_id = post_request['selected_id']
         self.selected_name = post_request['selected_name']
         item_lookup = post_request['item']
+        """ To get the items from the database correctly, they are ordered in descending order by date and a top 5 subset from that result.
+            This then is reversed so that the items can appear in ascending order for the graph."""
         if (item_lookup == 'S'):
             itemhistories = SharePriceHistory.objects.filter(share=self.selected_id).order_by('-transaction_date', 'id')[:5][::-1]
         else:
@@ -41,6 +39,8 @@ class LineChartJSONView(BaseLineChartView):
         self.data = []
         itemdata = []
         self.labels = []
+        """ for each item, append the price to the data list
+            and add the date to the X-Axis label list """
         for itemhistory in itemhistories:
             itemdata.append(itemhistory.new_price)
             self.labels.append(itemhistory.transaction_date)

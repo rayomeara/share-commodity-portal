@@ -71,7 +71,7 @@ caption p {
 }
 
 #myChart {
-    background-color: cyan
+    background-color: white
 }
 
 .navbar-nav>li>p {
@@ -80,3 +80,14 @@ caption p {
     color: #00FF00;
 }
 
+.negative-price {
+    color: indianred;
+}
+
+.positive-price {
+    color: limegreen;
+}
+
+.user-label {
+    width: 15%;
+}
