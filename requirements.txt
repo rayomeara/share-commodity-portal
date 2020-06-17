@@ -9,4 +9,4 @@ psycopg2==2.7.3.1
 pytz==2020.1
 requests==2.21.0
 stripe==1.70.0
-urllib3==1.25.9
+urllib3==1.25.7
