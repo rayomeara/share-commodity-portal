@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load listing_extras %}
 {% block content %}
 
 <div class="row row-flex">
@@ -10,9 +10,13 @@
         <div class="product" style="background-image: url('{{ MEDIA_URL }}{{ commodity.image }}')"></div>
 
         <h4>{{ commodity.name }}</h4>
-        <p>{{ commodity.price }}</p>
-        <p>{{ commodity.previous_price }}</p>
-        <p>{{ commodity.unit }}</p>
+        <p>Price: {{ commodity.price }}</p>
+        {% if commodity.price < commodity.previous_price %}
+            <p>Diff: <span class="negative-price">{{ commodity.price|subtract:commodity.previous_price }}</span></p>
+        {% else %}
+            <p>Diff: <span class="positive-price">+{{ commodity.price|subtract:commodity.previous_price }}</span></p>
+        {% endif %}
+        <p>Unit: {{ commodity.unit }}</p>
 
         <form method="post" action="{% url 'add_to_commodity_order' commodity.id %}">
             {% csrf_token %}
@@ -36,8 +40,12 @@
         <div class="product" style="background-image: url('{{ MEDIA_URL }}{{ share.image }}')"></div>
 
         <h4>{{ share.name }}</h4>
-        <p>{{ share.price }}</p>
-        <p>{{ share.previous_price }}</p>
+        <p>Price: {{ share.price }}</p>
+        {% if share.price < share.previous_price %}
+            <p>Diff: <span class="negative-price">{{ share.price|subtract:share.previous_price }}</span></p>
+        {% else %}
+            <p>Diff: <span class="positive-price">+{{ share.price|subtract:share.previous_price }}</span></p>
+        {% endif %}
 
         <form method="post" action="{% url 'add_to_share_order' share.id %}">
             {% csrf_token %}

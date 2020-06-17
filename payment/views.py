@@ -6,8 +6,8 @@ from .models import PaymentShareItem, PaymentCommodityItem, SharePurchase, Share
 from django.conf import settings
 from django.utils import timezone
 from listing.models import Share, Commodity
-from django.db.models.query import EmptyQuerySet
 from django.contrib.auth.models import User
+from decimal import Decimal
 import stripe
 
 # Create your views here.
@@ -26,6 +26,8 @@ def process_payment(request):
             total = 0
             user = User.objects.get(email=request.user.email)
             share_order = request.session.get('share_order', {})
+
+            # process each share purchase in the order
             for id, quantity in share_order.items():
                 share = get_object_or_404(Share, pk=id)
                 total += quantity * share.price
@@ -35,10 +37,15 @@ def process_payment(request):
                     quantity=quantity
                 )
                 payment_share_item.save()
-                new_share_price = process_new_price(share.price, quantity, True)
+
+                # calculate the new price for the share as a result of this purchase
+                new_share_price = Decimal(process_new_price(share.price, quantity, True))
                 share.previous_price = share.price
                 share.price = new_share_price
                 share.save()
+
+                # add to the share quantity for the user
+                # if one does not exist, create one
                 share_purchase_set = SharePurchase.objects.filter(
                     user=user,
                     share=share
@@ -51,8 +58,11 @@ def process_payment(request):
                     )
                 else:
                     share_purchase = share_purchase_set[0]
-                    share_purchase.quantity = share_purchase.quantity + quantity
+                    share_purchase.quantity += quantity
+
                 share_purchase.save()
+
+                # create a history of the share transaction for chart analysis
                 share_price_history = SharePriceHistory(
                     share=share,
                     old_price=share.previous_price,
@@ -62,6 +72,8 @@ def process_payment(request):
                 share_price_history.save()
 
             commodity_order = request.session.get('commodity_order', {})
+
+            # process each commodity purchase in the order
             for id, quantity in commodity_order.items():
                 commodity = get_object_or_404(Commodity, pk=id)
                 total += quantity * commodity.price
@@ -71,10 +83,15 @@ def process_payment(request):
                     quantity=quantity
                 )
                 payment_commodity_item.save()
-                new_commodity_price = process_new_price(commodity.price, quantity, True)
+
+                # calculate the new price for the commodity as a result of this purchase
+                new_commodity_price = Decimal(process_new_price(commodity.price, quantity, True))
                 commodity.previous_price = commodity.price
                 commodity.price = new_commodity_price
                 commodity.save()
+
+                # add to the commodity quantity for the user
+                # if one does not exist, create one
                 commodity_purchase_set = CommodityPurchase.objects.filter(
                     user=user,
                     commodity=commodity
@@ -89,6 +106,8 @@ def process_payment(request):
                     commodity_purchase = commodity_purchase_set[0]
                     commodity_purchase.quantity = commodity_purchase.quantity + quantity
                 commodity_purchase.save()
+
+                # create a history of the commodity transaction for chart analysis
                 commodity_price_history = CommodityPriceHistory(
                     commodity=commodity,
                     old_price=commodity.previous_price,
@@ -97,6 +116,9 @@ def process_payment(request):
                 )
                 commodity_price_history.save()
 
+            # create a stripe charge using the required details
+            # if it fails, show an error
+            # on success, clear session objects and go to listing page
             try:
                 customer = stripe.Charge.create(
                     amount=int(total * 100),
@@ -125,7 +147,10 @@ def process_payment(request):
 
     return render(request, "payment.html", {'payment_form': payment_form, 'payment_financials_form': financials_form, 'publishable': settings.STRIPE_PUBLISHABLE})
 
+
 def process_new_price(price, quantity, is_purchase):
+    #calculate new price for share/commodity
+    #increase for purchase, decrease for sale
     if is_purchase:
         return '{:.2f}'.format(price + (price / 1000 * quantity))
     else:

@@ -5,7 +5,7 @@ from .models import Commodity
 
 class ShareTests(TestCase):
     """ Here we'll define the tests that we'll run against
-        our Product models """
+        our Share model """
 
     def test_str(self):
         test_name = Share(name='A share')
@@ -13,7 +13,7 @@ class ShareTests(TestCase):
 
 class CommodityTests(TestCase):
     """ Here we'll define the tests that we'll run against
-        our Product models """
+        our Commodity model """
 
     def test_str(self):
         test_name = Commodity(name='A commodity')

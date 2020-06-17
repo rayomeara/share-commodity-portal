@@ -63,6 +63,9 @@
     <p>Total</p>
     <p><span class="glyphicon glyphicon-euro" aria-hidden="true"></span>{{ total }}</p>
     <a href="{% url 'process_payment' %}" class="btn btn-success" role="button"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>Checkout</a>
+    {% if credit_amount >= total %}
+    <a href="{% url 'process_no_card_payment' %}" class="btn btn-success" role="button"><span class="glyphicon glyphicon-ok-sign" aria-hidden="true"></span>Use Credit</a>
+    {% endif %}
 </div>
 
 {% endblock %}
