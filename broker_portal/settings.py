@@ -28,7 +28,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-e0f8c602-949d-49e0-91e2-43a0a6f38ebb.ws-eu01.gitpod.io', 'rom-broker-portal.herokuapp.com']
+ALLOWED_HOSTS = ['8000-e0f8c602-949d-49e0-91e2-43a0a6f38ebb.ws-eu01.gitpod.io', 'rom-share-commodity-portal.herokuapp.com']
 
 
 # Application definition
