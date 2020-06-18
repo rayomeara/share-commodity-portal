@@ -25,3 +25,16 @@ source ~/.bashrc
 <div class="product" style="background-image: url('{{ MEDIA_URL }}{{ commodity.image}}')"></div>
 
 
+chardet==3.0.4
+dj-database-url==0.5.0
+Django==1.11.17
+django-chartjs==2.1.0
+django-forms-bootstrap==3.1.0
+gunicorn==19.7.1
+idna==2.9
+Pillow==5.4.1
+psycopg2==2.7.3.1
+pytz==2020.1
+requests==2.21.0
+stripe==1.70.0
+urllib3==1.25.7
