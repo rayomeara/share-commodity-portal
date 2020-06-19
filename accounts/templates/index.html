@@ -3,3 +3,18 @@
 {% block page_title %}Home Page{% endblock %}
 
 {% block page_heading %}Home{% endblock %}
+
+{% block content %}
+
+<div class="jumbotron">
+    <h1>Share/Commodity Broker Portal</h1>
+    <p>Welcome to the share/commodity broker portal. This portal offers the user the chance to buy and sell selected shares or commodities</p>
+    <p>Performance charts are also in place to let users see how shares are performing and a personal portfolio for the user's own purchases</p>
+    {% if user.is_authenticated %}
+        <p>To access your portfolio, <a href="{% url 'portfolio' %}">click here</a></p>
+        <p>To see our current product listing, <a href="{% url 'current_listing' %}">click here</a></p>
+        <p>To see the latest performance charts, <a href="{% url 'show_performance' %}">click here</a></p>
+    {% endif %}
+</div>
+
+{% endblock %}
