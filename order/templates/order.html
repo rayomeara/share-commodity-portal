@@ -12,7 +12,7 @@
         
         <div class="caption">
             <h3>{{ commodity_item.item.name }}</h3>
-            <p>{{ commodity_item.item.price }}</p>
+            <p>Price: {{ commodity_item.item.price }}</p>
             <p>
                 <form class="form-inline" method="post" action="{% url 'adjust_commodity_order' commodity_item.id %}">
                     {% csrf_token %}
