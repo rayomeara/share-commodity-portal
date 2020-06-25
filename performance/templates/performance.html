@@ -39,6 +39,7 @@
         <script type="text/javascript" src="{% static 'js/Chart.min.js' %}"></script>
         <script type="text/javascript">
             var shareChart;
+            <!-- Creating the initial chart definition on the page -->
             $.get('{% url "line_chart_json" %}', function(data) {
                 var ctx = $("#myChart").get(0).getContext("2d");
                 shareChart = new Chart(ctx, {
@@ -46,6 +47,7 @@
                 });
             });
 
+            <!-- Reconfigure the chart if a new share is selected -->
             $('#share-select').on('change', function () {
             var selected_name = $('#share-select option:selected').text();   
             var selected_id = $('#share-select option:selected').val();
@@ -56,6 +58,7 @@
                     type: 'POST',
                     url: url,
                     data: data,
+                    <!-- Pass in the CSRF token to the request header to allow the post request -->
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
                     },
@@ -67,6 +70,7 @@
                 });
             });
 
+            <!-- Reconfigure the chart if a new commodity is selected -->
             $('#commodity-select').on('change', function () {
             var selected_name = $('#commodity-select option:selected').text();   
             var selected_id = $('#commodity-select option:selected').val();
@@ -77,6 +81,7 @@
                     type: 'POST',
                     url: url,
                     data: data,
+                    <!-- Pass in the CSRF token to the request header to allow the post request -->
                     beforeSend: function(xhr) {
                         xhr.setRequestHeader('X-CSRFToken', $.cookie('csrftoken'))
                     },

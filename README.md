@@ -161,3 +161,10 @@ heroku ps:scale web=1
 To run locally, clone the repository using the command:
 
 git clone https://github.com/rayomeara/share-commodity-portal.git
+
+---
+### Acknowledgements
+
+I have used a lot of the styles from the Ecommerce Mini Project on the course for a number of the pages.
+I felt like the style really fit well.
+
